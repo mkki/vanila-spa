@@ -1,26 +1,25 @@
+import { ViewModel } from '@/core/ViewModel';
 import type { Todo } from '@/model/TodoModel';
 
-type Subscriber = (todos: Todo[]) => void;
-
-export class TodoViewModel {
+export class TodoViewModel extends ViewModel<Todo[]> {
   private todos: Todo[];
-  private subscribers: Subscriber[];
 
   constructor(todos: Todo[]) {
+    super();
     this.todos = todos;
-    this.subscribers = [];
   }
 
   toggleCompleted(index: number) {
     this.todos[index].completed = !this.todos[index].completed;
-    this.notify();
+    this.notify(this.todos);
   }
-  subscribe(callback: Subscriber): void {
-    this.subscribers.push(callback);
+
+  subscribe(callback: (todos: Todo[]) => void): void {
+    super.subscribe(callback);
     callback(this.todos);
   }
 
-  private notify(): void {
-    this.subscribers.forEach((callback) => callback(this.todos));
+  getTodos(): Todo[] {
+    return this.todos;
   }
 }

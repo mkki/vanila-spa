@@ -1,10 +1,9 @@
+import { View } from '@/core/View';
 import type { Todo } from '@/model/TodoModel';
 
-export class TodoView {
-  private root: HTMLElement;
-
-  constructor(root: HTMLElement) {
-    this.root = root;
+export class TodoView extends View{
+  constructor(parent: HTMLElement) {
+    super(parent);
   }
 
   private createTodoItem(
@@ -51,7 +50,7 @@ export class TodoView {
   }
 
   render(todos: Todo[], onToggle?: (index: number) => void) {
-    const existing = this.root.querySelector('.todo-list');
+    const existing = this.parent.querySelector('.todo-list');
     if (existing) existing.remove();
 
     const fragment = document.createDocumentFragment();
@@ -65,6 +64,6 @@ export class TodoView {
     });
 
     fragment.appendChild(ul);
-    this.root.appendChild(fragment);
+    this.parent.appendChild(fragment);
   }
 }
